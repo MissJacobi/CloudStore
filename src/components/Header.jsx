@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import Logo from './Logo';
 import { Link } from 'react-router-dom';
 import AuthModal from './AuthModal';
+import CartDropdown from './CartDropdown'
 import cartIcon from '../assets/cartIcon.png'
 
 const Header = () => {
     const [isAuthOpen, setIsAuthOpen] = useState(false);
+    const [isCartOpen, setIsCartOpen] = useState(false);
     const [cartCount, setCartCount] = useState(1);
 
   return (
@@ -33,9 +35,10 @@ const Header = () => {
                 Profile
             </button>
 
-            <Link
-                to="/cart"
-                className='relative flex items-center ml-2 hover:opacity-80 transition-opacity'>
+        <div className='relative flex items-center'>
+            <button
+                onClick={() => setIsCartOpen(!isCartOpen)}
+                className='relative flex items-center justify-center hover:opacity-80 transition-opacity'>
                 <img 
                 src={cartIcon}
                 alt="Cart"
@@ -52,7 +55,10 @@ const Header = () => {
                         </span>                
                     </span>
                      )}
-            </Link>
+            </button>
+                <CartDropdown isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+        </div>
+        
         </nav>
       </div>
       <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
