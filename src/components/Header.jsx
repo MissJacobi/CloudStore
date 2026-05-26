@@ -1,14 +1,30 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Logo from './Logo';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthModal from './AuthModal';
-import CartDropdown from './CartDropdown'
-import cartIcon from '../assets/cartIcon.png'
+import CartDropdown from './CartDropdown';
+import cartIcon from '../assets/cartIcon.png';
 
-const Header = () => {
+const Header = ({ user, setUser }) => {
     const [isAuthOpen, setIsAuthOpen] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [cartCount, setCartCount] = useState(1);
+
+    const navigate = useNavigate();
+
+    const handleProfileClick = () => {
+      if (user) {
+        navigate('/profile');
+      } else {
+        setIsAuthOpen(true);
+      }
+    };
+
+    const handleLoginSuccess = (userData) => {
+      setUser(userData);
+      setIsAuthOpen(false);
+      navigate('/profile');
+    };
 
   return (
     <>
@@ -24,44 +40,49 @@ const Header = () => {
         </Link>
 
         {/* Navbar */}
-        <nav className="relative flex items-center gap-10">
+        <nav className="flex items-center gap-10">
           <Link to="/" className="text-[11px] tracking-[0.4em] uppercase text-white/70 hover:text-[#f3e5ab] transition-colors font-medium">
             Shop
           </Link>
         
-            <button 
-                onClick={() => setIsAuthOpen(true)}
-                className="text-[11px] tracking-[0.4em] uppercase border border-[#d4af37]/40 px-8 py-3 rounded-full text-[#d4af37] hover:bg-[#d4af37]/10 hover:border-[#d4af37]/80 transition-all duration-500 shadow-[0_0_25px_rgba(212,175,55,0.1)]">
-                Profile
-            </button>
+          <button 
+              onClick={handleProfileClick}
+              className="text-[11px] tracking-[0.4em] uppercase border border-[#d4af37]/40 px-8 py-3 rounded-full text-[#d4af37] hover:bg-[#d4af37]/10 hover:border-[#d4af37]/80 transition-all duration-500 shadow-[0_0_25px_rgba(212,175,55,0.1)]">
+              {user ? `Hi, ${user.firstName}` : 'Profile'}
+          </button>
 
-        <div className='relative flex items-center'>
-            <button
-                onClick={() => setIsCartOpen(!isCartOpen)}
-                className='relative flex items-center justify-center hover:opacity-80 transition-opacity'>
-                <img 
-                src={cartIcon}
-                alt="Cart"
-                className='w-14 h-14 object-contain'/>
+          <div className='relative flex items-center'>
+              <button
+                  onClick={() => setIsCartOpen(!isCartOpen)}
+                  className='relative flex items-center justify-center hover:opacity-80 transition-opacity'>
+                  <img 
+                    src={cartIcon}
+                    alt="Cart"
+                    className='w-14 h-14 object-contain'
+                  />
 
-                   {cartCount > 0 && (
-                    <span className='absolute top-[2px] right-[2px] 
+                  {cartCount > 0 && (
+                    <span className='absolute top-[4px] right-[4px] 
                                     bg-[#050505]/80 backdrop-blur-md
                                     border border-[#d4af37]/60
                                     w-5 h-5 flex items-center justify-center
                                     rounded-full shadow-[0_0_10px_rgba(212,175,55,0.1)]'>
-                        <span className='text-[10px] font-bold text-[#d4af37] leading-none select-none'>
+                        <span className='h-full flex items-center justify-center text-[10px] font-bold text-[#d4af37] select-none'>
                             {cartCount > 99 ? '99+' : cartCount}
                         </span>                
                     </span>
-                     )}
-            </button>
-                <CartDropdown isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-        </div>
+                  )}
+              </button>
+              <CartDropdown isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+          </div>
         
         </nav>
       </div>
-      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+      <AuthModal 
+        isOpen={isAuthOpen} 
+        onClose={() => setIsAuthOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
+      />
     </header>
     </>
   );
