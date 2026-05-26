@@ -1,6 +1,6 @@
 import React, {useState}from "react";
 
-const AuthModal = ({isOpen, onClose}) => {
+const AuthModal = ({isOpen, onClose, onLoginSuccess}) => {
     const [authMode, setAuthMode] = useState('login');
     const [formData, setFormData] = useState({
         firstName: '',
@@ -21,6 +21,14 @@ const AuthModal = ({isOpen, onClose}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("Date to backend:", formData);
+        if(onLoginSuccess){
+            onLoginSuccess({
+                firstName: formData.firstName || 'Felicia',
+                lastName: formData.lastName || 'Jacobi',
+                email: formData.email || 'felicia@cloudstore.com'
+            });
+        }
+        onClose();
     };
 
     return(
@@ -28,7 +36,7 @@ const AuthModal = ({isOpen, onClose}) => {
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}/>
 
             <div className="relative w-full max-w-md bg-[#050505]/80 backdrop-blur-2xl border border-[#d4af37]/30 p-10 rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,1)] transition-all">
-                <button onClick={onClose} className="absolute top-6 right-6 text-white/40 hover:text-white transiton-colors">
+                <button onClick={onClose} className="absolute top-6 right-6 text-white/40 hover:text-white transition-colors">
                     x
                 </button>
                 <div className="text-center mb-8">
@@ -40,7 +48,7 @@ const AuthModal = ({isOpen, onClose}) => {
                     </p>
                 </div>
 
-                <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+                <form className="space-y-5" onSubmit={handleSubmit}>
                     {authMode === 'signup' && (
                         <div className="flex gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
                             <div className="flex-1">
@@ -48,9 +56,11 @@ const AuthModal = ({isOpen, onClose}) => {
                                 <input 
                                     type="text"
                                     name="firstName"
+                                    value={formData.firstName}
+                                    onChange={handleChange}
                                     className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3 text-white focus:outline-none focus:border-[#d4af37]/50"
                                     placeholder="Cassiopeia"
-                                    required
+                                
                                     />
                             </div>
 
@@ -59,9 +69,11 @@ const AuthModal = ({isOpen, onClose}) => {
                                 <input 
                                     type="text"
                                     name="lastName"
+                                    value={formData.lastName}
+                                    onChange={handleChange}
                                     className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3 text-white focus:outline-none focus:border-[#d4af37]/50"
                                     placeholder="Stars"
-                                    required
+                                    
                                     />
                             </div>
                         </div>
@@ -71,6 +83,8 @@ const AuthModal = ({isOpen, onClose}) => {
                         <input 
                             type="email"
                             name="email"
+                            value={formData.email}
+                            onChange={handleChange}
                             className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3 text-white focus:outline-none focus:border-[#d4af37]/50"
                             placeholder="cassiopeia-star@galaxy.com"
                             required
@@ -82,13 +96,15 @@ const AuthModal = ({isOpen, onClose}) => {
                         <input 
                             type="password"
                             name="password"
+                            value={formData.password}
+                            onChange={handleChange}
                             className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3 text-white focus:outline-none focus:border-[#d4af37]/50"
                             placeholder="********"
                             required
                         />
                     </div>
 
-                    <button type="submit" className="w-full bg-[#d4af37] text-blsck font-bold py-4 rounded-full uppercase tracking-widest text-xs hover:bg-[#f3e5ab] transition-all shadow-[0_10px_30px_rgba(212,175,55,0.2)] mt-4">
+                    <button type="submit" className="w-full bg-[#d4af37] text-black font-bold py-4 rounded-full uppercase tracking-widest text-xs hover:bg-[#f3e5ab] transition-all shadow-[0_10px_30px_rgba(212,175,55,0.2)] mt-4">
                         {authMode === 'login' ? 'Login to Orbit' : 'Create Access Key'}
                     </button>
                     <div className="mt-8 text-center text-[11px] tracking-wide text-gray-500">

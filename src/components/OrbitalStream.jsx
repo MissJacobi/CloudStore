@@ -1,8 +1,6 @@
 
 const OrbitalStream = () =>{
-    return(
-
-    );
+    return
     
 };
 
