@@ -145,7 +145,7 @@ const ProfilePage = ({ user, onLogout }) => {
 
             <div className="mt-12 p-6 border border-[#d4af37]/10 rounded-3xl bg-[#d4af37]/5 flex justify-between items-center">
                 <div>
-                    <p className="text-[9px] uppercase tracking-widest text-[#d4af37] mb-1">Loyalty Points (1 € = 1 Point)</p>
+                    <p className="text-[9px] uppercase tracking-widest text-[#d4af37] mb-1">Loyalty Points (1 $ = 1 Point)</p>
                     <p className="text-xl font-serif italic">
                         {user?.totalPoints !== undefined ? user.totalPoints.toLocaleString() : "0"} / 10,000
                     </p>
