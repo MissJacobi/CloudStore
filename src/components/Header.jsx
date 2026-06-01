@@ -5,10 +5,11 @@ import AuthModal from './AuthModal';
 import CartDropdown from './CartDropdown';
 import cartIcon from '../assets/cartIcon.png';
 
-const Header = ({ user, setUser }) => {
+const Header = ({ user, setUser, cart = [] }) => {
     const [isAuthOpen, setIsAuthOpen] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false);
-    const [cartCount, setCartCount] = useState(1);
+
+    const totalItemsInCart = cart.reduce((total, item) => total + item.quantity, 0);
 
     const navigate = useNavigate();
 
@@ -61,19 +62,19 @@ const Header = ({ user, setUser }) => {
                     className='w-14 h-14 object-contain'
                   />
 
-                  {cartCount > 0 && (
+                  {totalItemsInCart > 0 && (
                     <span className='absolute top-[4px] right-[4px] 
                                     bg-[#050505]/80 backdrop-blur-md
                                     border border-[#d4af37]/60
                                     w-5 h-5 flex items-center justify-center
                                     rounded-full shadow-[0_0_10px_rgba(212,175,55,0.1)]'>
                         <span className='h-full flex items-center justify-center text-[10px] font-bold text-[#d4af37] select-none'>
-                            {cartCount > 99 ? '99+' : cartCount}
+                            {totalItemsInCart > 99 ? '99+' : totalItemsInCart}
                         </span>                
                     </span>
                   )}
               </button>
-              <CartDropdown isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+              <CartDropdown isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} cart={cart} />
           </div>
         
         </nav>
