@@ -16,7 +16,7 @@ const ProfilePage = ({ user, onLogout }) => {
       const baseUrl = import.meta.env.VITE_API_URL;
 
       try{
-        const response = await fetch(`${baseUrl}/api/orders/user/${user.email}`,{
+        const response = await fetch(`${baseUrl}/orders/user/${user.email}`,{
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

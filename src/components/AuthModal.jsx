@@ -26,8 +26,8 @@ const AuthModal = ({isOpen, onClose, onLoginSuccess}) => {
         const baseUrl = import.meta.env.VITE_API_URL;
 
         const url = authMode === "login"
-        ?`${baseUrl}/api/auth/login`
-        : `${baseUrl}/api/users/register`;
+        ?`${baseUrl}/auth/login`
+        : `${baseUrl}/users/register`;
 
         const bodyData = authMode === "login"
         ? {email: formData.email, password: formData.password}
