@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const CartDropdown = ({ isOpen, onClose, cart = [] }) => {
+const CartDropdown = ({ isOpen, onClose, cart = [], onRemoveFromCart,onUpdateQuantity }) => {
   if (!isOpen) return null;
 
   // 2. Räkna ut totalsumman dynamiskt baserat på vad som faktiskt ligger i varukorgen
@@ -14,7 +15,7 @@ const CartDropdown = ({ isOpen, onClose, cart = [] }) => {
         <button onClick={onClose} className="text-[9px] tracking-widest uppercase text-white/40 hover:text-white transition-colors">Close</button>
       </div>
 
-      {/* 3. PRODUKTLISTAN – Här mappar vi ut dina äkta produkter */}
+      {/* 3. PRODUKTLISTAN */}
       <div className="space-y-4 max-h-[240px] overflow-y-auto pr-1 scrollbar-none mb-6">
         {cart.length === 0 ? (
           <p className="text-xs text-white/40 text-center py-8 italic">Your cosmic cart is empty</p>
@@ -33,9 +34,29 @@ const CartDropdown = ({ isOpen, onClose, cart = [] }) => {
               </div>
 
               {/* Antal */}
-              <div className="text-right flex-shrink-0">
-                <p className="text-[10px] text-white/40">Qty: {item.quantity}</p>
+              <div className="flex items-center gap-2 bg-black/40 border border-white/10 px-2.5 py-1 rounded-full flex-shrink-0">
+                <button
+                    onClick={() => onUpdateQuantity(item.id, item.quantity -1)}
+                    className="text-white/40 hover:text-[#d4af37] text-xs font-bold tansition-colors px-1">
+                        -
+                </button>
+                <span className="text-[10px] text-white/80 font-medium min-w-[12px] text-center">
+                  {item.quantity}
+                </span>
+                <button
+                    onClick={() => onUpdateQuantity(item.id, item.quantity +1)}
+                    className="text-white/40 hover:text-[#d4af37] text-xs font-bold tansition-colors px-1">
+                        +
+                </button>
               </div>
+
+                <button
+                onClick={() => onRemoveFromCart(item.id)}
+                className="text-white/20 hover:text-white/80 text-sm font-medium transition-colors pl-1 hover:scale-110"
+                title='Remove item'>
+                    x
+                </button>
+
             </div>
           ))
         )}
@@ -47,10 +68,12 @@ const CartDropdown = ({ isOpen, onClose, cart = [] }) => {
           <span className="text-[10px] tracking-widest uppercase text-white/40">Total</span>
           <span className="font-serif italic text-[#d4af37] text-base">${cartTotal.toFixed(2)}</span>
         </div>
-
-        <button className="w-full bg-[#d4af37] text-black py-3 rounded-full text-[10px] uppercase tracking-widest font-bold hover:bg-[#b3922e] transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+        <Link
+        to="/checkout"
+        onClick={onClose}
+        className="w-full block text-center bg-[#d4af37] text-black py-3 rounded-full text-[10px] uppercase tracking-widest font-bold hover:bg-[#b3922e] transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
           Proceed to Checkout
-        </button>
+        </Link>
       </div>
 
     </div>

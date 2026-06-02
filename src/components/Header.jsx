@@ -5,7 +5,7 @@ import AuthModal from './AuthModal';
 import CartDropdown from './CartDropdown';
 import cartIcon from '../assets/cartIcon.png';
 
-const Header = ({ user, setUser, cart = [] }) => {
+const Header = ({ user, setUser, cart = [], onRemoveFromCart, onUpdateQuantity }) => {
     const [isAuthOpen, setIsAuthOpen] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false);
 
@@ -74,7 +74,7 @@ const Header = ({ user, setUser, cart = [] }) => {
                     </span>
                   )}
               </button>
-              <CartDropdown isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} cart={cart} />
+              <CartDropdown isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} cart={cart} onRemoveFromCart={onRemoveFromCart} onUpdateQuantity={onUpdateQuantity}/>
           </div>
         
         </nav>
