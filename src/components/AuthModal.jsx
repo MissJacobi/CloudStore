@@ -1,4 +1,6 @@
+import { form } from "framer-motion/client";
 import React, {useState}from "react";
+
 
 const AuthModal = ({isOpen, onClose, onLoginSuccess}) => {
     const [authMode, setAuthMode] = useState('login');
@@ -18,17 +20,50 @@ const AuthModal = ({isOpen, onClose, onLoginSuccess}) => {
         }));
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Date to backend:", formData);
-        if(onLoginSuccess){
-            onLoginSuccess({
-                firstName: formData.firstName || 'Felicia',
-                lastName: formData.lastName || 'Jacobi',
-                email: formData.email || 'felicia@cloudstore.com'
+
+        const baseUrl = import.meta.env.VITE_API_URL;
+
+        const url = authMode === "login"
+        ?`${baseUrl}/api/auth/login`
+        : `${baseUrl}/api/users/register`;
+
+        const bodyData = authMode === "login"
+        ? {email: formData.email, password: formData.password}
+        : {firstName: formData.firstName, lastName: formData.lastName, email: formData.email, password: formData.password};
+
+        try {
+            const response = await fetch(url,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(bodyData)
             });
+
+            if(response.ok){
+                const data = await response.json();
+                //Förväntas få data med all info
+
+                if(authMode === 'login'){
+                    if(onLoginSuccess){
+                        //skickar både data och token
+                        onLoginSuccess(data.user, data.token);
+                    }
+                    onClose();
+                } else {
+                    alert("Account created successfully! Plese log in.")
+                    setAuthMode("login");
+                }
+            }else {
+                const errorText = await response.text();
+                alert(`Authentication faild: ${errorText || 'Check your credentials'}`);
+            }
+        } catch (errror){
+            console.error("Connection problem to beckend:", error);
+            alert("Could not connect to the cosmic server. Is your backend running?")
         }
-        onClose();
     };
 
     return(

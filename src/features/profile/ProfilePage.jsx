@@ -1,17 +1,45 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GalaxyBackground from '../../components/GalaxyBackground';
 import { useNavigate } from 'react-router-dom';
 
 const ProfilePage = ({ user, onLogout }) => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
+  const [orders, setOrders] = useState([]);
+  const [loadingOrders, setLoadigOrders] = useState(true);
 
-  // Exempel på ordrar - detta kopplas till din backend sen
-  const orders = [
-    { id: '#CS-4812', date: 'Oct 28, 2023', item: 'Nebula Synapse Watch', price: '€299.00', img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&q=80' },
-    { id: '#CS-3955', date: 'Oct 15, 2023', item: 'Noise-Caamond Ring', price: '€150.00', status: 'DELIVERED', img: 'https://images.unsplash.com/photo-1589128777073-263566ae5e4d?w=100&q=80' },
-    { id: '#CS-3109', date: 'Sep 30, 2023', item: 'Stellar Jacket', price: '$289.00', status: 'SHIPPED', img: 'https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=100&q=80' },
-  ];
+  useEffect(() => {
+    if(!user) return;
+    
+    const fetchOrderHistory = async () => {
+      const token = localStorage.getItem("orbit_token");
+      const baseUrl = import.meta.env.VITE_API_URL;
+
+      try{
+        const response = await fetch(`${baseUrl}/api/orders/user/${user.email}`,{
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if(response.ok){
+          const data = await response.json();
+          setOrders(data);
+        } else if (response.status === 401){
+          onLogout();
+          navigate('/')
+        }
+      } catch (error){
+        console.error("Could not get cosmic orders:", error);
+      } finally {
+        setLoadigOrders(false);
+      }
+    };
+
+    fetchOrderHistory();
+  },[user, onLogout, navigate]);
 
   if(!user) {
     return (
@@ -39,6 +67,9 @@ const ProfilePage = ({ user, onLogout }) => {
       </div>
     );
   }
+  
+  const displayFirstName = user.firstname || user.firstName || "Explorer";
+  const displayLastName = user.lastname || user.lastName || "";
 
   return (
     
@@ -117,29 +148,38 @@ const ProfilePage = ({ user, onLogout }) => {
               </div>
 
               <div className="space-y-4 max-h-[420px] overflow-y-auto pr-2 scrollbar-none">
-                {orders.map((order, index) => (
-                  <div key={index} className="group relative flex items-center justify-between bg-white/5 border border-white/5 hover:border-[#d4af37]/30 p-5 rounded-3xl transition-all duration-500 hover:bg-white/10">
-                    
-                    <div className="flex items-center gap-6">
-                      <div className="w-16 h-16 bg-black rounded-2xl border border-white/10 overflow-hidden">
-                          <img src={order.img} alt={order.item} className="w-full h-full object-cover mix-blend-screen opacity-80 group-hover:opacity-100 transition-opacity" />
-                      </div>
+                {loadingOrders ? (
+                  <p className="text-xs text-white/40 text-center py-12 animate-pulse uppercase tracking-wider">Fetching historical transmissions...</p>
+                ) : orders.length === 0 ? (
+                  <p className="text-xs text-white/40 text-center py-12 italic">No cosmic orders recorded yet.</p>
+                ) : (
+                  orders.map((order, index) => (
+                    <div key={index} className="group relative flex items-center justify-between bg-white/5 border border-white/5 hover:border-[#d4af37]/30 p-5 rounded-3xl transition-all duration-500 hover:bg-white/10">
                       
-                      <div>
-                          <p className="text-[10px] text-[#d4af37] font-medium tracking-widest mb-1">Order {order.id}</p>
-                          <h3 className="text-sm font-medium text-white/90">{order.item}</h3>
-                          <p className="text-[10px] text-white/40 mt-1">{order.date}</p>
+                      <div className="flex items-center gap-6">
+                        <div className="w-16 h-16 bg-black rounded-2xl border border-white/10 overflow-hidden flex items-center justify-center">
+                            <img src={order.productImage} alt="Order item" className="max-w-full max-h-full object-contain mix-blend-screen opacity-80 group-hover:opacity-100 transition-opacity" />
+                        </div>
+                        
+                        <div>
+                            <p className="text-[10px] text-[#d4af37] font-medium tracking-widest mb-1">Order #{order.id}</p>
+                            <h3 className="text-sm font-medium text-white/90">Cosmic Package</h3>
+                            <p className="text-[10px] text-white/40 mt-1">
+                              {order.orderDate ? new Date(order.orderDate).toLocaleDateString() : 'Processing Date'}
+                            </p>
+                        </div>
+                      </div>
+
+                      <div className="text-right">
+                        
+                        <p className="text-xs font-serif italic text-white mb-1">${order.totalAmount?.toFixed(2)}</p>
+                        <span className="text-[9px] px-3 py-1 rounded-full border border-white/10 bg-white/5 text-white/60 tracking-widest group-hover:border-[#d4af37]/30 group-hover:text-[#d4af37] transition-all">
+                            CONFIRMED
+                        </span>
                       </div>
                     </div>
-
-                    <div className="text-right">
-                      <p className="text-xs font-serif italic text-white mb-1">{order.price}</p>
-                      <span className="text-[9px] px-3 py-1 rounded-full border border-white/10 bg-white/5 text-white/60 tracking-widest group-hover:border-[#d4af37]/30 group-hover:text-[#d4af37] transition-all">
-                          {order.status || 'DELIVERED'}
-                      </span>
-                    </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
 
