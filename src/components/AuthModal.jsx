@@ -61,7 +61,7 @@ const AuthModal = ({isOpen, onClose, onLoginSuccess}) => {
                 const errorText = await response.text();
                 alert(`Authentication faild: ${errorText || 'Check your credentials'}`);
             }
-        } catch (errror){
+        } catch (error){
             console.error("Connection problem to beckend:", error);
             alert("Could not connect to the cosmic server. Is your backend running?")
         }
