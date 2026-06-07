@@ -47,10 +47,12 @@ const AuthModal = ({isOpen, onClose, onLoginSuccess}) => {
                 const data = await response.json();
                 //Förväntas få data med all info
 
+                console.log("This comes from backend at login: ", data);
+
                 if(authMode === 'login'){
                     if(onLoginSuccess){
                         //skickar både data och token
-                        onLoginSuccess(data.user, data.token);
+                        onLoginSuccess(data.token, data.data);
                     }
                     onClose();
                 } else {
