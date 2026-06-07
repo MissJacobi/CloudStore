@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import GalaxyBackground from '../../components/GalaxyBackground';
 import { useNavigate } from 'react-router-dom';
 

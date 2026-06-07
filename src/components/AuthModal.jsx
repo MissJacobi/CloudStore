@@ -1,5 +1,4 @@
-import { form } from "framer-motion/client";
-import React, {useState}from "react";
+import { useState } from "react";
 
 
 const AuthModal = ({isOpen, onClose, onLoginSuccess}) => {

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Logo from './Logo';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthModal from './AuthModal';
 import CartDropdown from './CartDropdown';
 import cartIcon from '../assets/cartIcon.png';
 
-const Header = ({ user, setUser, cart = [], onRemoveFromCart, onUpdateQuantity }) => {
+const Header = ({ user, onLoginSuccess, cart = [], onRemoveFromCart, onUpdateQuantity }) => {
     const [isAuthOpen, setIsAuthOpen] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false);
 
@@ -21,8 +21,8 @@ const Header = ({ user, setUser, cart = [], onRemoveFromCart, onUpdateQuantity }
       }
     };
 
-    const handleLoginSuccess = (userData) => {
-      setUser(userData);
+    const handleLoginSuccess = (userData, token) => {
+      onLoginSuccess(userData, token);
       setIsAuthOpen(false);
       navigate('/profile');
     };

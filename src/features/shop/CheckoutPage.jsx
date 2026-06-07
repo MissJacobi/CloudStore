@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import GalaxyBackground from '../../components/GalaxyBackground';
 
 const CheckoutPage = ({ cart = [], user, onClearCart }) => {
   const [isOrderPlaced, setIsOrderPlaced] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [addressData, setAdressData] = useState({
+  const [addressData, setAddressData] = useState({
     street: '',
     postalCode: '',
     city: ''
@@ -14,20 +14,20 @@ const CheckoutPage = ({ cart = [], user, onClearCart }) => {
   const safeCart = Array.isArray(cart) ? cart : [];
   const cartTotal = safeCart.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  const handelAdressChange = (e) => {
+  const handleAddressChange = (e) => {
     const {name, value } = e.target;
-    setAdressData(prevState => ({
+    setAddressData(prevState => ({
       ...prevState,
       [name]: value
     }));
   };
 
-  const handlePlaceOrder = async () => {
-    if (e) e.preventDefault();
+  const handlePlaceOrder = async (e) => {
+    e.preventDefault();
     if (!user) return;
     setLoading(true);
     
-    const token = localStorage.getItem("orbit_token");
+    const token = localStorage.getItem("token");
     const baseUrl = import.meta.env.VITE_API_URL;
 
     const orderData =safeCart.map(item => ({
@@ -49,8 +49,8 @@ const CheckoutPage = ({ cart = [], user, onClearCart }) => {
 
       if(response.status === 401){
         alert("Your session has expired. Please log in again.")
-        localStorage.removeItem("orbit_token");
-        localStorage.removeItem("orbit_user");
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
         window.location.href = "/"
         return;
       }

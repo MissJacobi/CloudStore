@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import ShopPage from "./features/shop/ShopPage"
@@ -56,7 +56,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-space-black text-white pt-20">
-        <Header user={user} setUser={handleLoginSuccess} cart={cart} onRemoveFromCart={handleRemoveFromCart} onUpdateQuantity={handleUpdateQuantity} />
+        <Header user={user} onLoginSuccess={handleLoginSuccess} cart={cart} onRemoveFromCart={handleRemoveFromCart} onUpdateQuantity={handleUpdateQuantity} />
         <Routes>
           <Route path="/" element={<ShopPage onAddToCart={handleAddToCart}/>} />
           <Route path="/profile" element={<ProfilePage user={user} onLogout={handleLogout} />} />
