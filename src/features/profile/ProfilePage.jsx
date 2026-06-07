@@ -9,14 +9,19 @@ const ProfilePage = ({ user, onLogout }) => {
   const [loadingOrders, setLoadigOrders] = useState(true);
 
   useEffect(() => {
-    if(!user) return;
+    const savedUserString = localStorage.getItem("user");
+    if (!savedUserString) return;
+
+    const savedUser = JSON.parse(savedUserString);
+    if (!savedUser || !savedUser.email) return;
     
     const fetchOrderHistory = async () => {
       const token = localStorage.getItem("token");
       const baseUrl = import.meta.env.VITE_API_URL;
 
-      try{
-        const response = await fetch(`${baseUrl}/orders/user/${user.email}`,{
+      try {
+        
+        const response = await fetch(`${baseUrl}/orders/user/${savedUser.email}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -24,14 +29,14 @@ const ProfilePage = ({ user, onLogout }) => {
           }
         });
 
-        if(response.ok){
+        if (response.ok) {
           const data = await response.json();
           setOrders(data);
-        } else if (response.status === 401){
+        } else if (response.status === 401) {
           onLogout();
-          navigate('/')
+          navigate('/');
         }
-      } catch (error){
+      } catch (error) {
         console.error("Could not get cosmic orders:", error);
       } finally {
         setLoadigOrders(false);
@@ -39,12 +44,11 @@ const ProfilePage = ({ user, onLogout }) => {
     };
 
     fetchOrderHistory();
-  },[user, onLogout, navigate]);
+  }, [user, onLogout, navigate]);
 
-  if(!user) {
+  if (!user) {
     return (
       <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center p-6">
-      
         <div className="-mt-24 text-center space-y-4 w-full max-w-md bg-[#050505]/40 backdrop-blur-2xl 
                         border border-[#d4af37]/20 p-10 rounded-3xl 
                         shadow-[0_20px_50px_rgba(0,0,0,0.6)] 
@@ -72,9 +76,7 @@ const ProfilePage = ({ user, onLogout }) => {
   const displayLastName = user.lastname || user.lastName || "";
 
   return (
-    
     <div className="relative min-h-screen text-white flex items-center justify-center p-4 md:p-10 overflow-hidden">
-    
       <div className="absolute inset-0 z-0">
         <GalaxyBackground />
       </div>
@@ -83,7 +85,6 @@ const ProfilePage = ({ user, onLogout }) => {
         
         <div className="lg:col-span-4 space-y-6 animate-in fade-in slide-in-from-left-8 duration-700">
           <div className="bg-black/40 backdrop-blur-xl border border-[#d4af37]/20 rounded-[2.5rem] p-8 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-            
             
             <div className="relative group mx-auto w-32 h-32 mb-6">
                 <div className="absolute inset-0 bg-[#d4af37]/20 rounded-full blur-xl group-hover:bg-[#d4af37]/40 transition-all" />
@@ -99,7 +100,6 @@ const ProfilePage = ({ user, onLogout }) => {
               </p>
             </div>
 
-            
             <div className="space-y-4">
                <div className="space-y-1">
                   <p className="text-[9px] uppercase tracking-widest text-white/40 ml-1">Current Email</p>
@@ -136,11 +136,9 @@ const ProfilePage = ({ user, onLogout }) => {
           </div>
         </div>
 
-        
         <div className="lg:col-span-8 animate-in fade-in slide-in-from-right-8 duration-700">
           <div className="bg-black/20 backdrop-blur-md border border-white/5 rounded-[2.5rem] p-8 h-full min-h-[600px] flex flex-col justify-between">
             
-        
             <div className="flex flex-col flex-1 min-h-0">
               <div className="flex justify-between items-center mb-10">
                   <h2 className="text-xl font-serif italic tracking-wider">Order History</h2>
@@ -155,12 +153,10 @@ const ProfilePage = ({ user, onLogout }) => {
                 ) : (
                   orders.map((order, index) => (
                     <div key={index} className="group relative flex items-center justify-between bg-white/5 border border-white/5 hover:border-[#d4af37]/30 p-5 rounded-3xl transition-all duration-500 hover:bg-white/10">
-                      
                       <div className="flex items-center gap-6">
                         <div className="w-16 h-16 bg-black rounded-2xl border border-white/10 overflow-hidden flex items-center justify-center">
                             <img src={order.productImage} alt="Order item" className="max-w-full max-h-full object-contain mix-blend-screen opacity-80 group-hover:opacity-100 transition-opacity" />
                         </div>
-                        
                         <div>
                             <p className="text-[10px] text-[#d4af37] font-medium tracking-widest mb-1">Order #{order.id}</p>
                             <h3 className="text-sm font-medium text-white/90">Cosmic Package</h3>
@@ -169,9 +165,7 @@ const ProfilePage = ({ user, onLogout }) => {
                             </p>
                         </div>
                       </div>
-
                       <div className="text-right">
-                        
                         <p className="text-xs font-serif italic text-white mb-1">${order.totalAmount?.toFixed(2)}</p>
                         <span className="text-[9px] px-3 py-1 rounded-full border border-white/10 bg-white/5 text-white/60 tracking-widest group-hover:border-[#d4af37]/30 group-hover:text-[#d4af37] transition-all">
                             CONFIRMED
@@ -190,7 +184,6 @@ const ProfilePage = ({ user, onLogout }) => {
                         {user?.totalPoints !== undefined ? user.totalPoints.toLocaleString() : "0"} / 10,000
                     </p>
                 </div>
-                
                 {user?.totalPoints >= 10000 ? (
                   <span className="text-[9px] uppercase tracking-widest text-emerald-400 border border-emerald-500/30 bg-emerald-500/5 px-4 py-2 rounded-full">
                       ★ Premium Unlocked
