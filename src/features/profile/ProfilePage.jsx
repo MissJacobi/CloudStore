@@ -88,12 +88,12 @@ const ProfilePage = ({ user, onLogout }) => {
             <div className="relative group mx-auto w-32 h-32 mb-6">
                 <div className="absolute inset-0 bg-[#d4af37]/20 rounded-full blur-xl group-hover:bg-[#d4af37]/40 transition-all" />
                 <div className="relative w-full h-full rounded-full border-2 border-[#d4af37]/40 overflow-hidden bg-black flex items-center justify-center">
-                    <span className="text-4xl font-serif italic text-[#d4af37]">{user.firstName?.charAt(0)}</span>
+                    <span className="text-4xl font-serif italic text-[#d4af37]">{displayFirstName?.charAt(0)}</span>
                 </div>
             </div>
 
             <div className="text-center space-y-2 mb-8">
-              <h1 className="text-3xl font-serif italic tracking-wide">{user.firstName} {user.lastName}</h1>
+              <h1 className="text-3xl font-serif italic tracking-wide">{displayFirstName} {displayLastName}</h1>
               <p className="text-[10px] uppercase tracking-[0.4em] text-[#d4af37]">
                 {user?.membershipTier || "Member"}
               </p>
