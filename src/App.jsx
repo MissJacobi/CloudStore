@@ -6,10 +6,20 @@ import ProfilePage from "./features/profile/ProfilePage"
 import CheckoutPage from "./features/shop/CheckoutPage";
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
   const [cart, setCart] = useState([]);
 
+  const handleLoginSuccess = (userData, token) => {
+    localStorage.setItem('token', token);       
+    localStorage.setItem('user', JSON.stringify(userData));
+    setUser(userData);
+
   const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setUser(null);
   }
 
@@ -45,7 +55,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-space-black text-white pt-20">
-        <Header user={user} setUser={setUser} cart={cart} onRemoveFromCart={handleRemoveFromCart} onUpdateQuantity={handleUpdateQuantity} />
+        <Header user={user} setUser={handleLoginSuccess} cart={cart} onRemoveFromCart={handleRemoveFromCart} onUpdateQuantity={handleUpdateQuantity} />
         <Routes>
           <Route path="/" element={<ShopPage onAddToCart={handleAddToCart}/>} />
           <Route path="/profile" element={<ProfilePage user={user} onLogout={handleLogout} />} />
