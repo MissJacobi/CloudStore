@@ -31,7 +31,7 @@ const AuthModal = ({isOpen, onClose, onLoginSuccess}) => {
 
         const bodyData = authMode === "login"
         ? {email: formData.email, password: formData.password}
-        : {firstName: formData.firstName, lastName: formData.lastName, email: formData.email, password: formData.password};
+        : {firstname: formData.firstName, lastname: formData.lastName, email: formData.email, password: formData.password};
 
         try {
             const response = await fetch(url,{
