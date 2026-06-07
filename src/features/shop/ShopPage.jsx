@@ -49,12 +49,12 @@ const ShopPage = ({ onAddToCart }) => {
   }
 
   return (
-    <div className="relative min-h-screen text-white p-6 md:p-12 overflow-hidden">
+    <div className="relative min-h-screen text-white p-6 md:p-12">
       {/* Bakgrundseffekter */}
-      <div className="absolute inset-0 z-0">
+      <div className="fixed inset-0 z-0">
         <GalaxyBackground />
       </div>
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px] z-10" />
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-[1px] z-10" />
 
       {/* Innehåll */}
       <div className="relative z-20 max-w-7xl mx-auto space-y-10 pt-16">
@@ -96,11 +96,11 @@ const ShopPage = ({ onAddToCart }) => {
             >
               <div>
                 {/* Produktbild */}
-                <div className="w-full h-64 bg-white rounded-2xl border border-white/5 overflow-hidden mb-6 relative flex items-center justify-center p-4">
+                <div className="w-full h-64 bg-transparent rounded-2xl border border-white/5 overflow-hidden mb-6 relative flex items-center justify-center p-4">
                   <img 
                     src={product.image} 
                     alt={product.title} 
-                    className="max-w-full max-h-full object-contain opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                    className="max-w-full max-h-full object-contain opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 mix-blend-multiply"
                   />
                 </div>
 

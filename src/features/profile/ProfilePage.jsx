@@ -175,7 +175,7 @@ const ProfilePage = ({ user, onLogout }) => {
                               }}
                             />
                           ) : null}
-                          <div className={`${order.productImage ? 'hidden' : 'flex'} w-full h-full items-center justify-center bg-black`}>
+                          <div className={`${order.productImage ? 'hidden' : 'flex'} w-full h-full items-center justify-center bg-black/60`}>
                             <span className="text-m font-serif italic text-white">Order</span>
                           </div>
                         </div>
