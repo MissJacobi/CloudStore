@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import GalaxyBackground from '../../components/GalaxyBackground';
 import { useNavigate } from 'react-router-dom';
 
+
 const ProfilePage = ({ user, onLogout }) => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
@@ -81,7 +82,7 @@ const ProfilePage = ({ user, onLogout }) => {
   const displayLastName = user.lastname || user.lastName || "";
 
   return (
-    <div className="relative min-h-screen text-white flex items-center justify-center p-4 md:p-10 overflow-hidden">
+    <div className="relative min-h-screen text-white flex flex-col justify-start md:justify-center items-center pt-[140px] md:pt-24 p-4 md:p-10 overflow-hidden">
       <div className="absolute inset-0 z-0">
         <GalaxyBackground />
       </div>
@@ -159,11 +160,29 @@ const ProfilePage = ({ user, onLogout }) => {
                   orders.map((order, index) => (
                     <div key={index} className="group relative flex items-center justify-between bg-white/5 border border-white/5 hover:border-[#d4af37]/30 p-5 rounded-3xl transition-all duration-500 hover:bg-white/10">
                       <div className="flex items-center gap-6">
-                        <div className="w-16 h-16 bg-black rounded-2xl border border-white/10 overflow-hidden flex items-center justify-center">
-                            <img src={order.productImage} alt="Order item" className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
+                        <div className="w-16 h-16 bg-white/5 rounded-2xl border border-white/10 overflow-hidden flex items-center justify-center flex-shrink-0">
+                          {order.productImage ? (
+                            <img 
+                              src={order.productImage} 
+                              alt="Order item" 
+                              className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                              onError={(e) => {
+                                // Om länken från databasen är trasig, dölj den tomma bilden och visa guld-bokstaven istället
+                                e.target.style.display = 'none';
+                                if (e.target.nextSibling) {
+                                  e.target.nextSibling.style.display = 'flex';
+                                }
+                              }}
+                            />
+                          ) : null}
+                          <div className={`${order.productImage ? 'hidden' : 'flex'} w-full h-full items-center justify-center bg-black`}>
+                            <span className="text-m font-serif italic text-white">Order</span>
+                          </div>
                         </div>
                         <div>
-                            <p className="text-[10px] text-[#d4af37] font-medium tracking-widest mb-1">Order #{order.id}</p>
+                            <p className="text-[10px] text-[#d4af37] font-medium tracking-widest mb-1">
+                              Order #CS-{((order.id || 1) * 1432) % 9000 + 1000}
+                            </p>
                             <h3 className="text-sm font-medium text-white/90">Cosmic Package</h3>
                             <p className="text-[10px] text-white/40 mt-1">
                               {order.orderDate ? new Date(order.orderDate).toLocaleDateString() : 'Processing Date'}
