@@ -12,7 +12,7 @@ const ProfilePage = ({ user, onLogout }) => {
     if(!user) return;
     
     const fetchOrderHistory = async () => {
-      const token = localStorage.getItem("orbit_token");
+      const token = localStorage.getItem("token");
       const baseUrl = import.meta.env.VITE_API_URL;
 
       try{
