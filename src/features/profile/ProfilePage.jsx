@@ -160,7 +160,7 @@ const ProfilePage = ({ user, onLogout }) => {
                     <div key={index} className="group relative flex items-center justify-between bg-white/5 border border-white/5 hover:border-[#d4af37]/30 p-5 rounded-3xl transition-all duration-500 hover:bg-white/10">
                       <div className="flex items-center gap-6">
                         <div className="w-16 h-16 bg-black rounded-2xl border border-white/10 overflow-hidden flex items-center justify-center">
-                            <img src={order.productImage} alt="Order item" className="max-w-full max-h-full object-contain mix-blend-screen opacity-80 group-hover:opacity-100 transition-opacity" />
+                            <img src={order.productImage} alt="Order item" className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
                         </div>
                         <div>
                             <p className="text-[10px] text-[#d4af37] font-medium tracking-widest mb-1">Order #{order.id}</p>

@@ -131,7 +131,7 @@ const AuthModal = ({isOpen, onClose, onLoginSuccess}) => {
                     </div>
 
                     <div>
-                        <label className="block text-[10px] uppercase tracking-widest text-gray-400 mb-2 ml-1">Password</label>
+                        <label className="block text-[10px] uppercase tracking-widest text-gray-400 mb-2 ml-1">Password (minimum of 8 caracters)</label>
                         <input 
                             type="password"
                             name="password"

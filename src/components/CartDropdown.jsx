@@ -7,7 +7,10 @@ const CartDropdown = ({ isOpen, onClose, cart = [], onRemoveFromCart,onUpdateQua
   const cartTotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
   return (
-    <div className="absolute right-0 top-full mt-4 w-96 bg-[#050505]/95 backdrop-blur-2xl border border-[#d4af37]/30 p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.7)] z-50">
+    <div className="fixed md:absolute top-[135px] md:top-full left-1/2 md:left-auto md:right-0 
+                  -translate-x-1/2 md:translate-x-0
+                  w-[calc(100vw-32px)] md:w-96
+                  bg-[#050505]/95 backdrop-blur-2xl border border-[#d4af37]/30 p-4 md:p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.7)] z-50">
       
       <div className="flex justify-between items-center mb-6">
         <span className="text-[10px] tracking-widest text-[#d4af37] uppercase font-medium">Luxury Cart</span>

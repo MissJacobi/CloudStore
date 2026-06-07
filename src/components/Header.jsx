@@ -30,26 +30,26 @@ const Header = ({ user, onLoginSuccess, cart = [], onRemoveFromCart, onUpdateQua
 
   return (
     <>
-    <header className="fixed top-4 left-0 w-full z-[100] px-6">
-      <div className="max-w-7xl mx-auto h-24 px-10 flex items-center justify-between 
+    <header className="fixed top-2 md:top-4 left-0 w-full z-[100] px-3 md:px-6">
+      <div className="max-w-7xl mx-auto py-4 md:h-24 px-4 md:px-10 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0
                       bg-[#050505]/40 backdrop-blur-2xl 
-                      border border-[#d4af37]/20 rounded-3xl
+                      border border-[#d4af37]/20 rounded-2xl md:rounded-3xl
                       shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
         
         {/* Logo */}
-        <Link to="/" className="flex items-center hover:opacity-90 transition-opacity scale-110">
+        <Link to="/" className="flex items-center hover:opacity-90 transition-opacity scale-100 md:scale-110">
           <Logo />
         </Link>
 
         {/* Navbar */}
-        <nav className="flex items-center gap-10">
-          <Link to="/" className="text-[11px] tracking-[0.4em] uppercase text-white/70 hover:text-[#f3e5ab] transition-colors font-medium">
+        <nav className="flex items-center justify-center gap-4 md:gap-10 w-full md:w-auto">
+          <Link to="/" className="text-[10px] md:text-[11px] tracking-[0.3em] md:tracking-[0.4em] uppercase text-white/70 hover:text-[#f3e5ab] transition-colors font-medium">
             Shop
           </Link>
         
           <button 
               onClick={handleProfileClick}
-              className="text-[11px] tracking-[0.4em] uppercase border border-[#d4af37]/40 px-8 py-3 rounded-full text-[#d4af37] hover:bg-[#d4af37]/10 hover:border-[#d4af37]/80 transition-all duration-500 shadow-[0_0_25px_rgba(212,175,55,0.1)]">
+              className="text-[10px] md:text-[11px] tracking-[0.3em] md:tracking-[0.4em] uppercase border border-[#d4af37]/40 px-4 md:px-8 py-2 md:py-3 rounded-full text-[#d4af37] hover:bg-[#d4af37]/10 hover:border-[#d4af37]/80 transition-all duration-500 shadow-[0_0_25px_rgba(212,175,55,0.1)] white-space-nowrap">
               {user ? `Hi, ${displayFirstName}` : 'Profile'}
           </button>
 
@@ -60,16 +60,16 @@ const Header = ({ user, onLoginSuccess, cart = [], onRemoveFromCart, onUpdateQua
                   <img 
                     src={cartIcon}
                     alt="Cart"
-                    className='w-14 h-14 object-contain'
+                    className='w-10 h-10 md:w-14 md:h-14 object-contain'
                   />
 
                   {totalItemsInCart > 0 && (
-                    <span className='absolute top-[4px] right-[4px] 
+                    <span className='absolute top-[0px] right-[0px] md:top-[4px] md:right-[4px] 
                                     bg-[#050505]/80 backdrop-blur-md
                                     border border-[#d4af37]/60
-                                    w-5 h-5 flex items-center justify-center
+                                    w-4 h-4 md:w-5 md:h-5 flex items-center justify-center
                                     rounded-full shadow-[0_0_10px_rgba(212,175,55,0.1)]'>
-                        <span className='h-full flex items-center justify-center text-[10px] font-bold text-[#d4af37] select-none'>
+                        <span className='h-full flex items-center justify-center text-[9px] md:text-[10px] font-bold text-[#d4af37] select-none'>
                             {totalItemsInCart > 99 ? '99+' : totalItemsInCart}
                         </span>                
                     </span>
@@ -88,6 +88,5 @@ const Header = ({ user, onLoginSuccess, cart = [], onRemoveFromCart, onUpdateQua
     </header>
     </>
   );
-};
-
+}
 export default Header;
