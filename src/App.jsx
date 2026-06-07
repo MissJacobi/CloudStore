@@ -16,6 +16,7 @@ function App() {
     localStorage.setItem('token', token);       
     localStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
