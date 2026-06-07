@@ -52,7 +52,7 @@ const AuthModal = ({isOpen, onClose, onLoginSuccess}) => {
                 if(authMode === 'login'){
                     if(onLoginSuccess){
                         //skickar både data och token
-                        onLoginSuccess(data.token, data.data);
+                        onLoginSuccess(data.user, data.token);
                     }
                     onClose();
                 } else {

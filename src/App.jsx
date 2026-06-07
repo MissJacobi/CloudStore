@@ -12,9 +12,9 @@ function App() {
   });
   const [cart, setCart] = useState([]);
 
-  const handleLoginSuccess = (userData, token) => {
-    localStorage.setItem('token', token);       
+  const handleLoginSuccess = (userData, token) => {   
     localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('token', token);
     setUser(userData);
   };
 
