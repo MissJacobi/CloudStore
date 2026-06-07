@@ -29,6 +29,13 @@ const CheckoutPage = ({ cart = [], user, onClearCart }) => {
     
     const token = localStorage.getItem("token");
     const baseUrl = import.meta.env.VITE_API_URL;
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+
+    if (token && token !== "undefined" && token !== "null") {
+      headers.Authorization = `Bearer ${token}`;
+    }
 
     const orderData =safeCart.map(item => ({
         id: item.id,
@@ -38,16 +45,14 @@ const CheckoutPage = ({ cart = [], user, onClearCart }) => {
       }));
 
     try {
-      const response = await fetch(`${baseUrl}/api/orders`, {
+      const response = await fetch(`${baseUrl}/orders`, {
         method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        credentials: 'include',
+        headers,
         body: JSON.stringify(orderData),
       });
 
-      if(response.status === 401){
+      if(response.status === 401 || response.status === 403){
         alert("Your session has expired. Please log in again.")
         localStorage.removeItem("token");
         localStorage.removeItem("user");

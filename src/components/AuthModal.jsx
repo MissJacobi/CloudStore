@@ -51,7 +51,9 @@ const AuthModal = ({isOpen, onClose, onLoginSuccess}) => {
                 if(authMode === 'login'){
                     if(onLoginSuccess){
                         //skickar både data och token
-                        onLoginSuccess(data.user, data.token);
+                        const user = data.user || data;
+                        const token = data.token || data.jwt || data.accessToken || data.access_token;
+                        onLoginSuccess(user, token);
                     }
                     onClose();
                 } else {

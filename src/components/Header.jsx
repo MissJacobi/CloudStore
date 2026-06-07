@@ -10,6 +10,7 @@ const Header = ({ user, onLoginSuccess, cart = [], onRemoveFromCart, onUpdateQua
     const [isCartOpen, setIsCartOpen] = useState(false);
 
     const totalItemsInCart = cart.reduce((total, item) => total + item.quantity, 0);
+    const displayFirstName = user?.firstName || user?.firstname || user?.name || 'Explorer';
 
     const navigate = useNavigate();
 
@@ -49,7 +50,7 @@ const Header = ({ user, onLoginSuccess, cart = [], onRemoveFromCart, onUpdateQua
           <button 
               onClick={handleProfileClick}
               className="text-[11px] tracking-[0.4em] uppercase border border-[#d4af37]/40 px-8 py-3 rounded-full text-[#d4af37] hover:bg-[#d4af37]/10 hover:border-[#d4af37]/80 transition-all duration-500 shadow-[0_0_25px_rgba(212,175,55,0.1)]">
-              {user ? `Hi, ${user.firstName}` : 'Profile'}
+              {user ? `Hi, ${displayFirstName}` : 'Profile'}
           </button>
 
           <div className='relative flex items-center'>

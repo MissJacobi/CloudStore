@@ -18,21 +18,26 @@ const ProfilePage = ({ user, onLogout }) => {
     const fetchOrderHistory = async () => {
       const token = localStorage.getItem("token");
       const baseUrl = import.meta.env.VITE_API_URL;
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+
+      if (token && token !== "undefined" && token !== "null") {
+        headers.Authorization = `Bearer ${token}`;
+      }
 
       try {
         
         const response = await fetch(`${baseUrl}/orders/user/${savedUser.email}`, {
           method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
+          credentials: 'include',
+          headers
         });
 
         if (response.ok) {
           const data = await response.json();
           setOrders(data);
-        } else if (response.status === 401) {
+        } else if (response.status === 401 || response.status === 403) {
           onLogout();
           navigate('/');
         }

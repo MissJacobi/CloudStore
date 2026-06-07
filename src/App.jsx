@@ -12,9 +12,15 @@ function App() {
   });
   const [cart, setCart] = useState([]);
 
-  const handleLoginSuccess = (userData, token) => {   
+  const handleLoginSuccess = (userData, token) => {
+    const authToken = token || userData?.token || userData?.jwt || userData?.accessToken || userData?.access_token;
+
     localStorage.setItem('user', JSON.stringify(userData));
-    localStorage.setItem('token', token);
+    if (authToken) {
+      localStorage.setItem('token', authToken);
+    } else {
+      localStorage.removeItem('token');
+    }
     setUser(userData);
   };
 
